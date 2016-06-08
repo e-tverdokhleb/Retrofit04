@@ -42,8 +42,7 @@ public class MainActivity extends AppCompatActivity {
                                 @Override
                                 public Response intercept(Chain chain) throws IOException {
                                     Request.Builder ongoing = chain.request().newBuilder();
-                                    ongoing.addHeader("Accept", "application/json")
-                                            .addHeader("Authorization", "Bearer 725877051245387778-KJ4FDm76R2wgEOk0acRhy4lHNLIfKSB");
+                                    ongoing.addHeader("Authorization", "725877051245387778-KJ4FDm76R2wgEOk0acRhy4lHNLIfKSB");
                                     return chain.proceed(ongoing.build());
                                 }
                             }).build();
