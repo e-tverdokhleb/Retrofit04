@@ -20,10 +20,12 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import com.example.hp.retrofit04.UserData;
+
 
 public class MainActivity extends AppCompatActivity {
     private final static String TAG ="MainActivityTAG";
-    public static final String BASE_URL = "https://api.twitter.com";
+
 
 
     @Override
@@ -36,27 +38,27 @@ public class MainActivity extends AppCompatActivity {
         btnFetch.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-
                 OkHttpClient httpClient = new OkHttpClient.Builder()
                             .addInterceptor(new Interceptor() {
                                 @Override
                                 public Response intercept(Chain chain) throws IOException {
                                     Request.Builder ongoing = chain.request().newBuilder();
-                                    ongoing.addHeader("Authorization", "725877051245387778-KJ4FDm76R2wgEOk0acRhy4lHNLIfKSB");
+                                    ongoing.header("Accept", "application/json")
+                                            .header("Content-type", "application/json")
+                                            .addHeader("Authorization", "Bearer 725877051245387778-KJ4FDm76R2wgEOk0acRhy4lHNLIfKSB"
+                                            );
                                     return chain.proceed(ongoing.build());
                                 }
                             }).build();
-
-                Log.d(TAG, "httpClient: " + httpClient.authenticator().toString());
-
+                             Log.d(TAG, "httpClient: " + httpClient.authenticator().toString());
 
                 Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl(BASE_URL)
+                        .baseUrl(UserData.BASE_URL)
+                        .client(httpClient)
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
 
                 Log.d(TAG, "retrofit: " + String.valueOf(retrofit));
-
 
                 TwitterService messages = retrofit.create(TwitterService.class);
                 Log.d(TAG, "messages: " + messages.toString());
@@ -84,8 +86,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            TextView textView;
-            textView = (TextView) findViewById(R.id.tvMessages);
+            TextView textView = (TextView) findViewById(R.id.tvMessages);
             textView.setText(result);
         }
     }
