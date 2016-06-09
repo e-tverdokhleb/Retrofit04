@@ -1,6 +1,7 @@
 package com.example.hp.retrofit04;
 
 import android.os.AsyncTask;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -43,10 +44,8 @@ public class MainActivity extends AppCompatActivity {
                                 @Override
                                 public Response intercept(Chain chain) throws IOException {
                                     Request.Builder ongoing = chain.request().newBuilder();
-                                    ongoing.header("Accept", "application/json")
-                                            .header("Content-type", "application/json")
-                                            .addHeader("Authorization", "Bearer 725877051245387778-KJ4FDm76R2wgEOk0acRhy4lHNLIfKSB"
-                                            );
+                                    ongoing.header("Authorization", "725877051245387778-KJ4FDm76R2wgEOk0acRhy4lHNLIfKSB");
+
                                     return chain.proceed(ongoing.build());
                                 }
                             }).build();
@@ -54,19 +53,21 @@ public class MainActivity extends AppCompatActivity {
 
                 Retrofit retrofit = new Retrofit.Builder()
                         .baseUrl(UserData.BASE_URL)
-                        .client(httpClient)
+                      //  .client(httpClient)
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
 
                 Log.d(TAG, "retrofit: " + String.valueOf(retrofit));
+                Log.d(TAG, "BASE_URL: " + UserData.BASE_URL);
 
                 TwitterService messages = retrofit.create(TwitterService.class);
                 Log.d(TAG, "messages: " + messages.toString());
 
-                Call<List<TweetConvert>> call = messages.listMessages();
+                Call<List<TweetConvert>> call = messages.listMessages("HromadskeUA");
                 Log.d(TAG, "call: " + call.toString());
 
-                new NetworkCall().execute(call);
+                AsyncTask networkCall = new NetworkCall().execute(call);
+                Log.d(TAG, "networkCall: " + networkCall.toString());
             }
         });
     }
