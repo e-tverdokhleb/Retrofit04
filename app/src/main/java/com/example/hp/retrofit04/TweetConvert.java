@@ -6,6 +6,6 @@ public class TweetConvert {
 
     @Override
     public String toString() {
-        return text +" --text-message-end \n ";
+        return text +" --text-message-end \n \n ";
     }
 }
