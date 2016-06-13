@@ -19,7 +19,7 @@ import com.google.gson.Gson;
 
 
 
-public class TwitterAuthenticator implements okhttp3.Authenticator {
+public class TwitterAuthenticator_old implements okhttp3.Authenticator {
 
     final static String TAG= "TweetAuth class";
 
@@ -31,7 +31,7 @@ public class TwitterAuthenticator implements okhttp3.Authenticator {
         String csecret=UserData.CSECRET;
         String baseUrl=UserData.BASE_URL;
 
-        boolean refreshResult = refreshToken(baseUrl,userRefreshToken,cid,csecret);
+        boolean refreshResult = refreshToken(baseUrl,userRefreshToken, UserData.CID,csecret);
         if(refreshResult)
         {
             //refresh is successful
