@@ -10,7 +10,6 @@ import com.example.hp.retrofit04.RefreshTokenResult;
 
 public interface APIService {
     @FormUrlEncoded
-    @Headers("Cache-Control: no-cache")
     @POST("token")
     public Call<RefreshTokenResult> refreshUserToken(@Header("Accept") String accept, @Header("Content-Type") String contentType, @Field("grant_type") String grantType,
                                                      @Field("client_id") String clientId, @Field("client_secret") String clientSecret, @Field("refresh_token") String refreshToken);

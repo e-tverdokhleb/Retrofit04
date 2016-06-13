@@ -23,9 +23,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity {
     private final static String TAG = "MainActivityTAG";
 
-    TwitterAuth authValue = new TwitterAuth();
-
-
+    static TwitterAuth twitterAuth = new TwitterAuth();
 
 
     @Override
@@ -33,13 +31,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button btnFetch = (Button) findViewById(R.id.btnFetch);
 
+        //Authenication
+
+
+
+        Button btnFetch = (Button) findViewById(R.id.btnFetch);
         btnFetch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final TwitterAuth twitterAuth = new TwitterAuth();
-
                 OkHttpClient httpClient = new OkHttpClient.Builder()
                         .addInterceptor(new Interceptor() {
                             @Override
@@ -49,16 +49,12 @@ public class MainActivity extends AppCompatActivity {
                                 return chain.proceed(ongoing.build());
                             }
                         }).build();
-                Log.d(TAG, "httpClient: " + httpClient.authenticator().toString());
-
 
                 Retrofit retrofit = new Retrofit.Builder()
                         .baseUrl(UserData.BASE_URL)
                         .client(httpClient)
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
-
-
 
                 TwitterService messages = retrofit.create(TwitterService.class);
                 Log.d(TAG, "TwitterAuth getHeader: "+ twitterAuth.getHeader());
@@ -82,14 +78,12 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(Call... params) {
-
             try {
-
-                return String.valueOf(params[0].execute().body());
+                String result = String.valueOf(params[0].execute().body());
+                return result;
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
             return "No data has Fetched";
         }
 
@@ -97,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String result) {
             TextView textView = (TextView) findViewById(R.id.tvMessages);
             textView.setText(result);
-            btnFetch.setText("Reresh");
+            btnFetch.setText("reresh");
         }
     }
 }
