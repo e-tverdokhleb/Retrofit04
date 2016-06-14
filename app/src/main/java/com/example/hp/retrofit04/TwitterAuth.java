@@ -8,9 +8,9 @@ public class TwitterAuth {
     final private String HMAC_SHA1 = "HMAC-SHA1";
 
             private String consumer_key = "OewqCxpycFUv0SD2ia1dqFWA1";
-    static  private String nonce = "ecadfe0f8b12b6cea334c624af2c0f30";
-            private String signature = "TaOEAdBfz0E8GcDZWhD3zAiqHkk%3D";
-            private String time_stamp = "1465770455";
+            private String nonce = "6dbb8dc86e361389c569b20a1d79305e";
+            private String signature = "ohrzSuy0SlvkPMoNdzcEiu3EnL0%3D";
+            private String time_stamp = "1465891218";
             private String token = "725877051245387778-KJ4FDm76R2wgEOk0acRhy4lHNLIfKSB";
             private String version = "1.0";
 
@@ -35,7 +35,6 @@ public class TwitterAuth {
     public String getHeader() {
         return authHeader;
     }
-
 
     public String generateNonce(){
        char abc[] = {'a','b','c','d','e','f','g','h','i',
