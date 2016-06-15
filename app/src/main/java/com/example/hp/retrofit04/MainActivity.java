@@ -9,6 +9,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import okhttp3.Interceptor;
@@ -45,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
             Call<List<AuthConvert>> call = messages.getAuthToken();
             AsyncTask authnetworkCall = new AuthNetworkCall().execute(call);
+
         }
 
         Button btnFetch = (Button) findViewById(R.id.btnFetch);
