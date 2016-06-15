@@ -18,8 +18,16 @@ import oauth.signpost.OAuth;
 import oauth.signpost.exception.OAuthMessageSignerException;
 import oauth.signpost.signature.HmacSha1MessageSigner;
 import oauth.signpost.signature.OAuthMessageSigner;
+import retrofit2.Call;
+
+import com.example.hp.retrofit04.TwitterService;
 
 public class TwitterAuth {
+    private static String cKey="";
+    private static String cSecret="";
+    private static String aToken="";
+    private static String aTokenSecret="";
+
     final private String HMAC_SHA1 = "HMAC-SHA1";
             private String method = "GET";
             private String consumer_key = "OewqCxpycFUv0SD2ia1dqFWA1";
@@ -35,7 +43,9 @@ public class TwitterAuth {
 
     private String authHeader;
 
-    public TwitterAuth() {
+    public TwitterAuth(String cKey, String cSecret,String aToken, String aTokenSecret) {
+        this.cKey = cKey; this.cSecret = cSecret; this.aToken = aToken; this.aTokenSecret = aTokenSecret;
+
         this.getSignature(true);
         update();
     }
@@ -74,7 +84,9 @@ public class TwitterAuth {
     }
 
     private String getSignature(boolean isEncoded) {
-        String singatureBaseUrl = "GET&https%3A%2F%2Fapi.twitter.com%2F1.1%2Fstatuses%2Fuser_timeline.json&" +
+        String singatureBaseUrl = "GET" + "&" +
+                OAuth.percentEncode(UserData.BASE_URL) + //https%3A%2F%2Fapi.twitter.com%2F
+                "1.1%2Fstatuses%2Fuser_timeline.json&" +
                 "oauth_consumer_key%3DOewqCxpycFUv0SD2ia1dqFWA1%26" +
                 "oauth_nonce%3Dd67c4dc51ab3073b952399cbd1bced80%26" +
                 "oauth_signature_method%3DHMAC-SHA1%26o" +
@@ -83,9 +95,9 @@ public class TwitterAuth {
                 "oauth_version%3D1.0%26" +
                 "screen_name%3DHromadskeUA";
         if (isEncoded){
-            signature = OAuth.percentEncode(generateSignature(singatureBaseUrl, UserData.CSECRET, UserData.aTokenSecret));
+            signature = OAuth.percentEncode(generateSignature(singatureBaseUrl, UserData.cSecret, UserData.aTokenSecret));
         }else{
-            signature = generateSignature(singatureBaseUrl, UserData.CSECRET, UserData.aTokenSecret);
+            signature = generateSignature(singatureBaseUrl, UserData.cSecret, UserData.aTokenSecret);
         }
         update();
         return signature;

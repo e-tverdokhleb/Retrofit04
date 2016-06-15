@@ -9,6 +9,6 @@ import retrofit2.http.Headers;
 import retrofit2.http.Query;
 
 public interface TwitterService {
-    @GET("1.1/statuses/user_timeline.json")
+    @GET(UserData.REQUEST_USER_TIMELINE)
     Call<List<TweetConvert>> listMessages(@Query("screen_name") String screen_name);
 }

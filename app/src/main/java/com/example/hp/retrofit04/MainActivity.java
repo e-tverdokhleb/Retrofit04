@@ -26,7 +26,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity {
     private final static String TAG = "MainActivityTAG";
 
-    static TwitterAuth twitterAuth = new TwitterAuth();
+    static TwitterAuth twitterAuth = new TwitterAuth(UserData.cKey, UserData.cSecret, UserData.aToken, UserData.aTokenSecret);
 
     boolean isAuthenicated = false;
 
@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Authorized  Sign in with Twitter
         if (!isAuthenicated) {
-                Retrofit retrofit = new Retrofit.Builder()
+        /*        Retrofit retrofit = new Retrofit.Builder()
                         .baseUrl(UserData.BASE_URL)
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
             Call<List<AuthConvert>> call = messages.getAuthToken();
             AsyncTask authnetworkCall = new AuthNetworkCall().execute(call);
-
+        */
         }
 
         Button btnFetch = (Button) findViewById(R.id.btnFetch);
