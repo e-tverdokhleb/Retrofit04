@@ -25,16 +25,27 @@ public class MainActivity extends AppCompatActivity {
 
     static TwitterAuth twitterAuth = new TwitterAuth();
 
+    boolean isAuthenicated = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Authorized  Sign in with Twitter
+        if (!isAuthenicated) {
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl(UserData.BASE_URL)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
 
-        //Authenication
+            OauthService messages = retrofit.create(OauthService.class);
+            Log.d(TAG, "TwitterAuth getToken: ");
 
-
+            Call<List<AuthConvert>> call = messages.getAuthToken();
+            AsyncTask authnetworkCall = new AuthNetworkCall().execute(call);
+        }
 
         Button btnFetch = (Button) findViewById(R.id.btnFetch);
         btnFetch.setOnClickListener(new View.OnClickListener() {
@@ -74,8 +85,6 @@ public class MainActivity extends AppCompatActivity {
             btnFetch.setText("rereshing...");
         }
 
-
-
         @Override
         protected String doInBackground(Call... params) {
             try {
@@ -94,4 +103,33 @@ public class MainActivity extends AppCompatActivity {
             btnFetch.setText("reresh");
         }
     }
+
+
+
+    private class AuthNetworkCall extends AsyncTask<Call, Void, String> {
+    Button btnFetch = (Button) findViewById(R.id.btnFetch);
+
+    @Override
+    protected void onPreExecute(){
+        btnFetch.setText("sing...");
+    }
+
+    @Override
+    protected String doInBackground(Call... params) {
+        try {
+            String result = String.valueOf(params[0].execute().body());
+            return result;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "no result";
+    }
+
+    @Override
+    protected void onPostExecute(String result) {
+        TextView textView = (TextView) findViewById(R.id.tvMessages);
+        textView.setText(result);
+        btnFetch.setText("reresh");
+    }
+}
 }

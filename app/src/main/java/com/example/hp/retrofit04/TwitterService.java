@@ -11,5 +11,4 @@ import retrofit2.http.Query;
 public interface TwitterService {
     @GET("1.1/statuses/user_timeline.json")
     Call<List<TweetConvert>> listMessages(@Query("screen_name") String screen_name);
-   // Call<>
 }
