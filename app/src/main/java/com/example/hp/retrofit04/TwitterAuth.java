@@ -86,7 +86,7 @@ public class TwitterAuth {
     private String getSignature(boolean isEncoded) {
         String singatureBaseUrl = "GET" + "&" +
                 OAuth.percentEncode(UserData.BASE_URL) + //https%3A%2F%2Fapi.twitter.com%2F
-                "1.1%2Fstatuses%2Fuser_timeline.json&" +
+                "1.1%2Fstatuses%2Fuser_timeline.json" + "&" +
                 "oauth_consumer_key%3DOewqCxpycFUv0SD2ia1dqFWA1%26" +
                 "oauth_nonce%3Dd67c4dc51ab3073b952399cbd1bced80%26" +
                 "oauth_signature_method%3DHMAC-SHA1%26o" +
