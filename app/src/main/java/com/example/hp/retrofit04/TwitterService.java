@@ -6,9 +6,11 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface TwitterService {
     @GET(UserData.REQUEST_USER_TIMELINE)
     Call<List<TweetConvert>> listMessages(@Query("screen_name") String screen_name);
+
 }

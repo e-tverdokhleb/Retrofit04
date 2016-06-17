@@ -38,17 +38,28 @@ public class MainActivity extends AppCompatActivity {
 
         //Authorized  Sign in with Twitter
         if (!isAuthenicated) {
-        /*        Retrofit retrofit = new Retrofit.Builder()
+            OkHttpClient httpClient = new OkHttpClient.Builder()
+                    .addInterceptor(new Interceptor() {
+                        @Override
+                        public Response intercept(Chain chain) throws IOException {
+                            Request.Builder ongoing = chain.request().newBuilder()
+                                    .header("Authorization", twitterAuth.getGetTokenHeader());
+                            return chain.proceed(ongoing.build());
+                        }
+                    }).build();
+
+                Retrofit retrofit = new Retrofit.Builder()
                         .baseUrl(UserData.BASE_URL)
+                        .client(httpClient)
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
 
             OauthService messages = retrofit.create(OauthService.class);
-            Log.d(TAG, "TwitterAuth getToken: ");
+            Log.d(TAG, "TwitterAuth getToken: "+twitterAuth.getGetTokenHeader());
 
             Call<List<AuthConvert>> call = messages.getAuthToken();
             AsyncTask authnetworkCall = new AuthNetworkCall().execute(call);
-        */
+
         }
 
         Button btnFetch = (Button) findViewById(R.id.btnFetch);
