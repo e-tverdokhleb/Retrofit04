@@ -25,7 +25,7 @@ public interface OauthService {
                       "oauth_version=\"1.0\""
             })
     */
-    @POST("/oauth/request_token")
-    Call<List<AuthConvert>> getAuthToken();
+    @POST("oauth/request_token")
+    Cal`onvert>> getAuthToken();
 }
 

@@ -58,7 +58,7 @@ public class TwitterAuth {
         this.getTokenHeader = "OAuth " +
                 "oauth_consumer_key=\"" + consumer_key + "\"," +
                 "oauth_callback=\"http%3A%2F%2Flocalhost.com%2Fretrofit%2F\"," +
-                "oauth_nonce=\"" + "08127e81208b7ceeea754ed1114a1bd1" + "\"," +
+                "oauth_nonce=\"" + "08127e81208b7ceeea754ed1114a1bd2" + "\"," +
                 "oauth_signature=\"" + getGetTokenSignature(true) + "\"," +
                 "oauth_signature_method=\"" + HMAC_SHA1 + "\"," +
                 "oauth_timestamp=\"" + time_stamp + "\"," +
@@ -109,8 +109,9 @@ public class TwitterAuth {
                 "oauth_signature_method%3DHMAC-SHA1%26o" +
                 "auth_timestamp" + OAuth.percentEncode("=" + time_stamp + "&") +
                 "oauth_token" + OAuth.percentEncode("=" + UserData.aToken + "&") +
-                "oauth_version%3D1.0%26" +
+                "oauth_version" + OAuth.percentEncode("=" + "1.0" + "&") +
                 "screen_name%3DHromadskeUA";
+        Log.d("TwitterAuth:","GetSignature:" + singatureBaseUrl);
 
         if (isEncoded) {
             signature = OAuth.percentEncode(generateSignature(singatureBaseUrl, UserData.cSecret, UserData.aTokenSecret));
@@ -123,14 +124,15 @@ public class TwitterAuth {
 
     private String getGetTokenSignature(boolean isEncoded) {
         String singatureBaseUrl = "POST" + "&" +
-                OAuth.percentEncode(UserData.BASE_URL + "/oauth/request_token") + "&" +
+                OAuth.percentEncode(UserData.BASE_URL + "oauth/request_token") + "&" +
                 "oauth_callback" + OAuth.percentEncode("=" + "http://localhost.com/retrofit/" + "&") +
                 "oauth_consumer_key" + OAuth.percentEncode("=" + UserData.cKey + "&") +
-                "oauth_nonce" + OAuth.percentEncode("=" + nonce + "&") +
+                "oauth_nonce" + OAuth.percentEncode("=" + "08127e81208b7ceeea754ed1114a1bd2" + "&") +
                 "oauth_signature_method%3DHMAC-SHA1%26o" +
                 "auth_timestamp" + OAuth.percentEncode("=" + time_stamp + "&") +
-                "oauth_version%3D1.0%26";
+                "oauth_version%3D1.0";
 
+        Log.d("TwitterAuth:","GetTokenSignature :" + singatureBaseUrl);
         if (isEncoded) {
             signature = OAuth.percentEncode(generateSignature(singatureBaseUrl, UserData.cSecret, UserData.aTokenSecret));
         } else {

@@ -43,7 +43,8 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public Response intercept(Chain chain) throws IOException {
                             Request.Builder ongoing = chain.request().newBuilder()
-                                    .header("Authorization", twitterAuth.getGetTokenHeader());
+                                    .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                                    .addHeader("Authorization", twitterAuth.getGetTokenHeader());
                             return chain.proceed(ongoing.build());
                         }
                     }).build();
@@ -59,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
 
             Call<List<AuthConvert>> call = messages.getAuthToken();
             AsyncTask authnetworkCall = new AuthNetworkCall().execute(call);
-
         }
 
         Button btnFetch = (Button) findViewById(R.id.btnFetch);
@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onPreExecute(){
-        btnFetch.setText("sing...");
+        btnFetch.setText("sign...");
     }
 
     @Override
