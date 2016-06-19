@@ -134,9 +134,9 @@ public class TwitterAuth {
 
         Log.d("TwitterAuth:","GetTokenSignature :" + singatureBaseUrl);
         if (isEncoded) {
-            signature = OAuth.percentEncode(generateSignature(singatureBaseUrl, UserData.cSecret, UserData.aTokenSecret));
+            signature = OAuth.percentEncode(generateSignature(singatureBaseUrl, UserData.cSecret, null));
         } else {
-            signature = generateSignature(singatureBaseUrl, UserData.cSecret, UserData.aTokenSecret);
+            signature = generateSignature(singatureBaseUrl, UserData.cSecret, null);
         }
         return signature;
     }

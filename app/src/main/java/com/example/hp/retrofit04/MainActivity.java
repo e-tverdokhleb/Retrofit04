@@ -49,14 +49,17 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }).build();
 
-                Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl(UserData.BASE_URL)
-                        .client(httpClient)
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
+            Log.d(TAG, "getTokenHeader: " +twitterAuth.getGetTokenHeader());
+            Log.d(TAG, "getTokenHeader: " +twitterAuth.getGetTokenHeader());
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(UserData.BASE_URL)
+                    .client(httpClient)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
 
             OauthService messages = retrofit.create(OauthService.class);
-            Log.d(TAG, "TwitterAuth getToken: "+twitterAuth.getGetTokenHeader());
+            Log.d(TAG, "TwitterAuth getToken: " + twitterAuth.getGetTokenHeader());
 
             Call<List<AuthConvert>> call = messages.getAuthToken();
             AsyncTask authnetworkCall = new AuthNetworkCall().execute(call);
@@ -66,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         btnFetch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                OkHttpClient httpClient = new OkHttpClient.Builder()
+             /*   OkHttpClient httpClient = new OkHttpClient.Builder()
                         .addInterceptor(new Interceptor() {
                             @Override
                             public Response intercept(Chain chain) throws IOException {
@@ -83,10 +86,33 @@ public class MainActivity extends AppCompatActivity {
                         .build();
 
                 TwitterService messages = retrofit.create(TwitterService.class);
-                Log.d(TAG, "TwitterAuth getHeader: "+ twitterAuth.getHeader());
+                Log.d(TAG, "TwitterAuth getHeader: " + twitterAuth.getHeader());
 
                 Call<List<TweetConvert>> call = messages.listMessages("HromadskeUA");
                 AsyncTask networkCall = new NetworkCall().execute(call);
+                */
+
+                OkHttpClient httpClient = new OkHttpClient.Builder()
+                        .addInterceptor(new Interceptor() {
+                            @Override
+                            public Response intercept(Chain chain) throws IOException {
+                                Request.Builder ongoing = chain.request().newBuilder()
+                                        .header("Authorization", twitterAuth.getHeader());
+                                return chain.proceed(ongoing.build());
+                            }
+                        }).build();
+
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl("https://api.github.com/")
+                        //   .client(httpClient)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+
+                PostTesting messages = retrofit.create(PostTesting.class);
+
+                Call<List<GitHubConvertor>> call = messages.getData();
+                AsyncTask networkCall = new NetworkCall().execute(call);
+
             }
         });
     }
@@ -96,14 +122,14 @@ public class MainActivity extends AppCompatActivity {
         Button btnFetch = (Button) findViewById(R.id.btnFetch);
 
         @Override
-        protected void onPreExecute(){
+        protected void onPreExecute() {
             btnFetch.setText("rereshing...");
         }
 
         @Override
         protected String doInBackground(Call... params) {
             try {
-                String result = String.valueOf(params[0].execute().body());
+                String result = params[0].execute().body().toString();
                 return result;
             } catch (IOException e) {
                 e.printStackTrace();
@@ -120,31 +146,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     private class AuthNetworkCall extends AsyncTask<Call, Void, String> {
-    Button btnFetch = (Button) findViewById(R.id.btnFetch);
+        Button btnFetch = (Button) findViewById(R.id.btnFetch);
 
-    @Override
-    protected void onPreExecute(){
-        btnFetch.setText("sign...");
-    }
-
-    @Override
-    protected String doInBackground(Call... params) {
-        try {
-            String result = String.valueOf(params[0].execute().body());
-            return result;
-        } catch (IOException e) {
-            e.printStackTrace();
+        @Override
+        protected void onPreExecute() {
+            btnFetch.setText("sign...");
         }
-        return "no result";
-    }
 
-    @Override
-    protected void onPostExecute(String result) {
-        TextView textView = (TextView) findViewById(R.id.tvMessages);
-        textView.setText(result);
-        btnFetch.setText("reresh");
+        @Override
+        protected String doInBackground(Call... params) {
+            try {
+                String result = String.valueOf(params[0].execute().body());
+                return result;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return "no result";
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            TextView textView = (TextView) findViewById(R.id.tvMessages);
+            textView.setText(result);
+            btnFetch.setText("reresh");
+        }
     }
-}
 }
