@@ -5,6 +5,8 @@ public class AuthConvert {
     String oauth_token_secret;
     boolean oauth_callback_confirmed;
 
+    String id_str;
+
     @Override
     public String toString(){
         return "hi from authconvereter";

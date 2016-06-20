@@ -1,9 +1,11 @@
 package com.example.hp.retrofit04;
 
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
+import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.HEAD;
@@ -25,8 +27,7 @@ public interface OauthService {
                       "oauth_version=\"1.0\""
             })
     */
-
     @POST("oauth/request_token")
-    Call<List<AuthConvert>> getAuthToken();
+    Call<List<AuthConvert>> getAuthToken();   //@FieldMap Map<String,String> map
 }
 

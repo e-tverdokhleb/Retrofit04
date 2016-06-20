@@ -29,11 +29,10 @@ public class TwitterAuth {
     private static String aTokenSecret = "";
 
     final private String HMAC_SHA1 = "HMAC-SHA1";
-    private String method = "GET";
     private String consumer_key = "OewqCxpycFUv0SD2ia1dqFWA1";
     private String nonce = "08127e81208b7ceeea754ed1114a1bd7";
     private String signature = "";   //  v%2FnBLJ2XoJZLdxHpHq0fQoNhplA%3D
-    private String time_stamp = "1466129461";
+    private String time_stamp = "1466315097";
     private String token = "725877051245387778-KJ4FDm76R2wgEOk0acRhy4lHNLIfKSB";
     private String version = "1.0";
 
@@ -43,6 +42,7 @@ public class TwitterAuth {
 
     private String authHeader;
     private String getTokenHeader;
+    private String getUpdatePostHeader;
 
     public TwitterAuth(String cKey, String cSecret, String aToken, String aTokenSecret) {
         this.cKey = cKey;
@@ -52,19 +52,6 @@ public class TwitterAuth {
 
         this.getSignature(true);
         update();
-    }
-
-    public String getGetTokenHeader() {
-        this.getTokenHeader = "OAuth " +
-                "oauth_consumer_key=\"" + consumer_key + "\"," +
-                "oauth_callback=\"http%3A%2F%2Flocalhost.com%2Fretrofit%2F\"," +
-                "oauth_nonce=\"" + "08127e81208b7ceeea754ed1114a1bd2" + "\"," +
-                "oauth_signature=\"" + getGetTokenSignature(true) + "\"," +
-                "oauth_signature_method=\"" + HMAC_SHA1 + "\"," +
-                "oauth_timestamp=\"" + time_stamp + "\"," +
-                "oauth_version=\"" + version + "\"";
-        ;
-        return getTokenHeader;
     }
 
     private void update() {
@@ -78,6 +65,36 @@ public class TwitterAuth {
                 "oauth_version=\"" + version + "\"";
     }
 
+    public String getTimeStamp(){
+        return time_stamp;
+    }
+
+
+    public String getUpdatePostHeader() {
+        this.getUpdatePostHeader = "OAuth " +
+                "oauth_consumer_key=\"" + consumer_key + "\"," +
+                "oauth_nonce=\"" + nonce + "\"," +
+                "oauth_signature=\"" + updateStatusSignature(true) + "\"," +
+                "oauth_signature_method=\"" + HMAC_SHA1 + "\"," +
+                "oauth_timestamp=\"" + time_stamp + "\"," +
+                "oauth_token=\"" + token + "\"," +
+                "oauth_version=\"" + version + "\"";
+
+        return getUpdatePostHeader;
+    }
+
+    public String getGetTokenHeader() {
+        this.getTokenHeader = "OAuth " +
+                "oauth_callback=\"http%3A%2F%2Flocalhost.com%2Fretrofit\"," +
+                "oauth_consumer_key=\"" + consumer_key + "\"," +
+                "oauth_nonce=\"" + "08127e81208b7ceeea754ed1114a1bd4" + "\"," +
+                "oauth_signature=\"" + getGetTokenSignature(true) + "\"," +
+                "oauth_signature_method=\"" + HMAC_SHA1 + "\"," +
+                "oauth_timestamp=\"" + time_stamp + "\"," +
+                "oauth_version=\"" + version + "\"";
+
+        return getTokenHeader;
+    }
 
     public String getHeader() {
         return authHeader;
@@ -111,7 +128,7 @@ public class TwitterAuth {
                 "oauth_token" + OAuth.percentEncode("=" + UserData.aToken + "&") +
                 "oauth_version" + OAuth.percentEncode("=" + "1.0" + "&") +
                 "screen_name%3DHromadskeUA";
-        Log.d("TwitterAuth:","GetSignature:" + singatureBaseUrl);
+        Log.d("TwitterAuth:", "GetSignature:" + singatureBaseUrl);
 
         if (isEncoded) {
             signature = OAuth.percentEncode(generateSignature(singatureBaseUrl, UserData.cSecret, UserData.aTokenSecret));
@@ -122,25 +139,47 @@ public class TwitterAuth {
         return signature;
     }
 
-    private String getGetTokenSignature(boolean isEncoded) {
+    public String updateStatusSignature(boolean isEncoded) {
         String singatureBaseUrl = "POST" + "&" +
-                OAuth.percentEncode(UserData.BASE_URL + "oauth/request_token") + "&" +
-                "oauth_callback" + OAuth.percentEncode("=" + "http://localhost.com/retrofit/" + "&") +
+                OAuth.percentEncode(UserData.BASE_URL +
+                        UserData.REQUEST_USER_TIMELINE) + "&" +
                 "oauth_consumer_key" + OAuth.percentEncode("=" + UserData.cKey + "&") +
-                "oauth_nonce" + OAuth.percentEncode("=" + "08127e81208b7ceeea754ed1114a1bd2" + "&") +
+                "oauth_nonce" + OAuth.percentEncode("=" + nonce + "&") +
                 "oauth_signature_method%3DHMAC-SHA1%26o" +
-                "auth_timestamp" + OAuth.percentEncode("=" + time_stamp + "&") +
-                "oauth_version%3D1.0";
+                "oauth_timestamp" + OAuth.percentEncode("=" + time_stamp + "&") +
+                "oauth_token" + OAuth.percentEncode("=" + UserData.aToken + "&") +
+                "oauth_version" + OAuth.percentEncode("=" + "1.0" + "&") +
+                "status%3DHelloTwitter";
 
-        Log.d("TwitterAuth:","GetTokenSignature :" + singatureBaseUrl);
+        Log.d("TwitterAuth:", "GetSignature:" + singatureBaseUrl);
+
         if (isEncoded) {
-            signature = OAuth.percentEncode(generateSignature(singatureBaseUrl, UserData.cSecret, null));
+            signature = OAuth.percentEncode(generateSignature(singatureBaseUrl, UserData.cSecret, UserData.aTokenSecret));
         } else {
-            signature = generateSignature(singatureBaseUrl, UserData.cSecret, null);
+            signature = generateSignature(singatureBaseUrl, UserData.cSecret, UserData.aTokenSecret);
         }
+        update();
         return signature;
     }
 
+    public String getGetTokenSignature(boolean isEncoded) {
+        String singatureBaseUrl = "POST" + "&" +
+                OAuth.percentEncode(UserData.BASE_URL + "oauth/request_token") + "&" +
+                "oauth_callback" + OAuth.percentEncode("=" + "http://localhost.com/retrofit" + "&") +
+                "oauth_consumer_key" + OAuth.percentEncode("=" + UserData.cKey + "&") +
+                "oauth_nonce" + OAuth.percentEncode("=" + "08127e81208b7ceeea754ed1114a1bd4" + "&") +
+                "oauth_signature_method%3DHMAC-SHA1%26o" +
+                "oauth_timestamp" + OAuth.percentEncode("=" + time_stamp + "&") +
+                "oauth_version%3D1.0";
+
+        Log.d("TwitterAuth:", "GetTokenSignature :" + singatureBaseUrl);
+        if (isEncoded) {
+            signature = OAuth.percentEncode(generateSignature(singatureBaseUrl, UserData.cSecret, UserData.aTokenSecret));
+        } else {
+            signature = generateSignature(singatureBaseUrl, UserData.cSecret, UserData.aTokenSecret);
+        }
+        return signature;
+    }
 
     private String generateSignature(String signatueBaseStr, String oAuthConsumerSecret, String oAuthTokenSecret) {
         byte[] byteHMAC = null;
@@ -167,7 +206,7 @@ public class TwitterAuth {
     }
 
     private String generateTimeStamp() {
-        time_stamp = String.valueOf(System.currentTimeMillis() / 100000);
+        //  time_stamp = String.valueOf(System.currentTimeMillis() / 100000);
         return time_stamp;
     }
 }
