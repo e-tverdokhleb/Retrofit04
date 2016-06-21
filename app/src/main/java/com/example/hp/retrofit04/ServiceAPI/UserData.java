@@ -1,4 +1,4 @@
-package com.example.hp.retrofit04;
+package com.example.hp.retrofit04.ServiceAPI;
 
 public class UserData {
     public static String cKey = "OewqCxpycFUv0SD2ia1dqFWA1";

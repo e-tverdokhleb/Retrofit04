@@ -1,18 +1,11 @@
-package com.example.hp.retrofit04;
+package com.example.hp.retrofit04.Auth;
+
+import com.example.hp.retrofit04.Auth.AuthConvert;
 
 import java.util.List;
-import java.util.Map;
 
 import retrofit2.Call;
-import retrofit2.http.Field;
-import retrofit2.http.FieldMap;
-import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.GET;
-import retrofit2.http.HEAD;
-import retrofit2.http.Headers;
-import retrofit2.http.Multipart;
 import retrofit2.http.POST;
-import retrofit2.http.Query;
 
 public interface OauthService {
     /*   @Headers({

@@ -1,4 +1,4 @@
-package com.example.hp.retrofit04;
+package com.example.hp.retrofit04.Auth;
 
 public class AuthConvert {
     String oauth_token;
