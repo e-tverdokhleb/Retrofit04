@@ -15,7 +15,6 @@ import static com.example.hp.retrofit04.ServiceAPI.SignatureGenarator.generateSi
 
 
 public class TwitterConnector {
-    private String consumer_key = "OewqCxpycFUv0SD2ia1dqFWA1";
     private String token = "725877051245387778-KJ4FDm76R2wgEOk0acRhy4lHNLIfKSB";
     private String nonce = updateNonce();
     private String signature = updateSignature(true);
@@ -23,19 +22,25 @@ public class TwitterConnector {
     private String timeStamp = updateTimeStamp();
     private String version = "1.0";
 
-    private String authHeader;
+    private String userName = "HromadskeUA";
+
+    private String authHeader = "";
 
 
-    public TwitterConnector() {
+    public TwitterConnector(String userName) {
+        if ((userName != "") || (userName != null)) {
+            this.userName = userName;
+        }
         updateAllParams();
     }
 
-    private void updateAllParams() {
+
+    public void updateAllParams() {
         this.nonce = updateNonce();
         this.signature = updateSignature(true);
         this.timeStamp = updateTimeStamp();
         this.authHeader = "OAuth " +
-                "oauth_consumer_key=\"" + consumer_key + "\"," +
+                "oauth_consumer_key=\"" + UserData.cKey + "\"," +
                 "oauth_nonce=\"" + nonce + "\"," +
                 "oauth_signature=\"" + signature + "\"," +
                 "oauth_signature_method=\"" + HMAC_SHA1 + "\"," +
@@ -79,6 +84,10 @@ public class TwitterConnector {
         return nonce;
     }
 
+    public String getUserName() {
+        return userName;
+    }
+
     private String updateSignature(boolean isEncoded) {
         String result;
         String singatureBaseUrl = "GET" + "&" +
@@ -90,7 +99,7 @@ public class TwitterConnector {
                 "auth_timestamp" + OAuth.percentEncode("=" + timeStamp + "&") +
                 "oauth_token" + OAuth.percentEncode("=" + UserData.aToken + "&") +
                 "oauth_version" + OAuth.percentEncode("=" + "1.0" + "&") +
-                OAuth.percentEncode("screen_name=HromadskeUA");
+                OAuth.percentEncode("screen_name=" + userName);
         if (isEncoded) {
             result = OAuth.percentEncode(generateSignature(singatureBaseUrl, UserData.cSecret, UserData.aTokenSecret));
         } else {

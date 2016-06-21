@@ -14,7 +14,6 @@ import oauth.signpost.OAuth;
 import static com.example.hp.retrofit04.ServiceAPI.SignatureGenarator.generateSignature;
 
 public class TwitterConnectorAuth {
-    private String consumer_key = "OewqCxpycFUv0SD2ia1dqFWA1";
     private String nonce = updateNonce();
     private String signature = updateSignature(true);
     private String HMAC_SHA1 = "HMAC-SHA1";
@@ -33,8 +32,8 @@ public class TwitterConnectorAuth {
         this.signature = updateSignature(true);
         this.timeStamp = updateTimeStamp();
         this.authHeader = "OAuth " +
-                "oauth_callback=\"http%3A%2F%2Flocalhost.com%2Fretrofit\"," +
-                "oauth_consumer_key=\"" + consumer_key + "\"," +
+             //   "oauth_callback=\"http%3A%2F%2Flocalhost.com%2Fretrofit\"," +
+                "oauth_consumer_key=\"" + UserData.cKey  + "\"," +
                 "oauth_nonce=\"" + nonce + "\"," +
                 "oauth_signature=\"" + signature + "\"," +
                 "oauth_signature_method=\"" + HMAC_SHA1 + "\"," +
@@ -82,7 +81,7 @@ public class TwitterConnectorAuth {
         String result;
         String singatureBaseUrl = "POST" + "&" +
                 OAuth.percentEncode(UserData.BASE_URL + "oauth/request_token") + "&" +
-                "oauth_callback" + OAuth.percentEncode("=" + "http://localhost.com/retrofit" + "&") +
+              //  "oauth_callback" + OAuth.percentEncode("=" + "http://localhost.com/retrofit" + "&") +
                 "oauth_consumer_key" + OAuth.percentEncode("=" + UserData.cKey + "&") +
                 "oauth_nonce" + OAuth.percentEncode("=" + nonce + "&") +
                 "oauth_signature_method%3DHMAC-SHA1%26o" +

@@ -28,7 +28,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity {
     private final static String TAG = "MainActivityTAG";
 
-    static TwitterConnector twitterGetPosts = new TwitterConnector();
+    TwitterConnector twitterGetPosts = new TwitterConnector("Nashkiev");
             TwitterConnectorAuth twitterAuth = new TwitterConnectorAuth();
 
     boolean isAuthenicated = false;
@@ -46,12 +46,12 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public Response intercept(Chain chain) throws IOException {
                             Request.Builder ongoing = chain.request().newBuilder()
-                                    .header("Authorization", twitterGetPosts.getHeader());
+                                    .header("Authorization", twitterAuth.getHeader());
                             return chain.proceed(ongoing.build());
                         }
                     }).build();
 
-            Log.d(TAG, "getTokenHeader: " + twitterGetPosts.getHeader());
+            Log.d(TAG, "getHeader: " + twitterAuth.getHeader());
 
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(UserData.BASE_URL)
@@ -69,11 +69,9 @@ public class MainActivity extends AppCompatActivity {
                             map.put("oauth_version","1.0"); */
 
             OauthService messages = retrofit.create(OauthService.class);
-           // Log.d(TAG, "TwitterConnector getToken: " + twitterGetPosts.getGetTokenHeader());
             Call<List<AuthConvert>> call = messages.getAuthToken();
 
             AsyncTask authnetworkCall = new AuthNetworkCall().execute(call);
-            Log.d(TAG, "Response:" + authnetworkCall.getStatus().toString());
         }
 
         Button btnFetch = (Button) findViewById(R.id.btnFetch);
@@ -98,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
 
                 TwitterService messages = retrofit.create(TwitterService.class);
                 Log.d(TAG, "TwitterConnector getHeader: " + twitterGetPosts.getHeader());
-                Call<List<TweetConvert>> call = messages.listMessages("HromadskeUA");
+                Call<List<TweetConvert>> call = messages.listMessages("Nashkiev");
 
 //                Call<List<TweetConvert>> call = messages.updateStatus("HelloTwitter");
                     /*  call.enqueue(new Callback<List<TweetConvert>>() {
@@ -135,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return "No data has Fetched";
+            return "check Internet connection";
         }
 
         @Override
@@ -162,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return "no result";
+            return "check Internet connection";
         }
 
         @Override
