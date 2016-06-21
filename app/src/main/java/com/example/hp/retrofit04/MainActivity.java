@@ -21,6 +21,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private final static String TAG = "MainActivityTAG";
 
     TwitterConnector twitterGetPosts = new TwitterConnector("Nashkiev");
-            TwitterConnectorAuth twitterAuth = new TwitterConnectorAuth();
+    TwitterConnectorAuth twitterAuth = new TwitterConnectorAuth();
 
     boolean isAuthenicated = false;
 
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public Response intercept(Chain chain) throws IOException {
                             Request.Builder ongoing = chain.request().newBuilder()
-                                    .header("Authorization", twitterAuth.getHeader());
+                                    .addHeader("Authorization", twitterAuth.getHeader());
                             return chain.proceed(ongoing.build());
                         }
                     }).build();
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(UserData.BASE_URL)
-                    .client(httpClient)
+                    //.client(httpClient)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
                            /* Map<String, String> map = new HashMap<String, String>();
@@ -98,20 +99,9 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "TwitterConnector getHeader: " + twitterGetPosts.getHeader());
                 Call<List<TweetConvert>> call = messages.listMessages("Nashkiev");
 
-//                Call<List<TweetConvert>> call = messages.updateStatus("HelloTwitter");
-                    /*  call.enqueue(new Callback<List<TweetConvert>>() {
-                            @Override_
-                            public void onResponse(Call<List<TweetConvert>> call, retrofit2.Response<List<TweetConvert>> response) {
-                              //  Log.d(TAG, "Responce: " + response.message());
-                                Log.d(TAG, "Responce: ");
-                            }
-                            @Override
-                            public void onFailure(Call<List<TweetConvert>> call, Throwable t) {
-                                Log.d(TAG, "Responce: ");
-                            }
-                        });  */
-
+                //   Call<List<TweetConvert>> call = messages.updateStatus("HelloTwitter");
                 AsyncTask networkCall = new NetworkCall().execute(call);
+
             }
         });
     }
@@ -128,10 +118,17 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(Call... params) {
             try {
-                String result = String.valueOf(params[0].execute().body());
-                return result;
+                Log.d(TAG, "Server request: "+ (params[0].request().toString()));
+              //  Log.d(TAG, "Server request headers: "+ (params[0].request().headers().toString()));
+               // Log.d(TAG, "Server request body length: "+ (params[0].request().body().contentLength()));
+                retrofit2.Response response = params[0].execute();
+                Log.d(TAG, "Server response: "+String.valueOf(response.code()));
+                Log.d(TAG, "Server response: "+ String.valueOf(response.headers().toString()));
+                Log.d(TAG, "Server response: "+ String.valueOf(response.body()));
+                return String.valueOf(response.body());
             } catch (IOException e) {
                 e.printStackTrace();
+                Log.d(TAG, e.getMessage());
             }
             return "check Internet connection";
         }
@@ -155,10 +152,17 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(Call... params) {
             try {
-                String result = String.valueOf(params[0].execute().body());
-                return result;
+                Log.d(TAG, "Server request        : "+ (params[0].request().toString()));
+                Log.d(TAG, "Server request headers: "+ (params[0].request().headers().toString()));
+                Log.d(TAG, "Server request body   : "+ (params[0].request().body().contentLength()));
+                retrofit2.Response response = params[0].execute();
+                Log.d(TAG, "Server response: "+String.valueOf(response.code()));
+                Log.d(TAG, "Server response: "+ String.valueOf(response.headers().toString()));
+                Log.d(TAG, "Server response: "+ String.valueOf(response.errorBody().string()));
+                return String.valueOf(response.body());
             } catch (IOException e) {
                 e.printStackTrace();
+                Log.d(TAG, e.getMessage());
             }
             return "check Internet connection";
         }

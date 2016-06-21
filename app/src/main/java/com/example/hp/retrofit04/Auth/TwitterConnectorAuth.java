@@ -32,7 +32,7 @@ public class TwitterConnectorAuth {
         this.signature = updateSignature(true);
         this.timeStamp = updateTimeStamp();
         this.authHeader = "OAuth " +
-             //   "oauth_callback=\"http%3A%2F%2Flocalhost.com%2Fretrofit\"," +
+                "oauth_callback=\"http%3A%2F%2Flocalhost.com%2Fretrofit\"," +
                 "oauth_consumer_key=\"" + UserData.cKey  + "\"," +
                 "oauth_nonce=\"" + nonce + "\"," +
                 "oauth_signature=\"" + signature + "\"," +
@@ -80,8 +80,8 @@ public class TwitterConnectorAuth {
     private String updateSignature(boolean isEncoded) {
         String result;
         String singatureBaseUrl = "POST" + "&" +
-                OAuth.percentEncode(UserData.BASE_URL + "oauth/request_token") + "&" +
-              //  "oauth_callback" + OAuth.percentEncode("=" + "http://localhost.com/retrofit" + "&") +
+                OAuth.percentEncode(UserData.BASE_URL + "oauth/request_token/") + "&" +
+                "oauth_callback" + OAuth.percentEncode("=" + "http://localhost.com/retrofit" + "&") +
                 "oauth_consumer_key" + OAuth.percentEncode("=" + UserData.cKey + "&") +
                 "oauth_nonce" + OAuth.percentEncode("=" + nonce + "&") +
                 "oauth_signature_method%3DHMAC-SHA1%26o" +
