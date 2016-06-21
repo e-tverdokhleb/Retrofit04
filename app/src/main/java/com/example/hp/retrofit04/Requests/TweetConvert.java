@@ -1,4 +1,4 @@
-package com.example.hp.retrofit04;
+package com.example.hp.retrofit04.Requests;
 
 public class TweetConvert {
     String text;

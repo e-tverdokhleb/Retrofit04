@@ -1,5 +1,6 @@
-package com.example.hp.retrofit04;
+package com.example.hp.retrofit04.Requests;
 
+import com.example.hp.retrofit04.Requests.TweetConvert;
 import com.example.hp.retrofit04.ServiceAPI.UserData;
 
 import java.util.List;

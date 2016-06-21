@@ -1,4 +1,4 @@
-package com.example.hp.retrofit04;
+package com.example.hp.retrofit04.Requests;
 /**
  * Class purpose to user_timeline - request
  * (https://dev.twitter.com/rest/reference/get/statuses/user_timeline)
@@ -14,7 +14,7 @@ import oauth.signpost.OAuth;
 import static com.example.hp.retrofit04.ServiceAPI.SignatureGenarator.generateSignature;
 
 
-public class TwitterConnector {
+public class GetUserTimeLine {
     private String token = "725877051245387778-KJ4FDm76R2wgEOk0acRhy4lHNLIfKSB";
     private String nonce = updateNonce();
     private String signature = updateSignature(true);
@@ -27,7 +27,7 @@ public class TwitterConnector {
     private String authHeader = "";
 
 
-    public TwitterConnector(String userName) {
+    public GetUserTimeLine(String userName) {
         if ((userName != "") || (userName != null)) {
             this.userName = userName;
         }

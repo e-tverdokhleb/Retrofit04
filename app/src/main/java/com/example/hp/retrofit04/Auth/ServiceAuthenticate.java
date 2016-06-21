@@ -13,7 +13,7 @@ import oauth.signpost.OAuth;
 
 import static com.example.hp.retrofit04.ServiceAPI.SignatureGenarator.generateSignature;
 
-public class TwitterConnectorAuth {
+public class ServiceAuthenticate {
     private String nonce = updateNonce();
     private String signature = updateSignature(true);
     private String HMAC_SHA1 = "HMAC-SHA1";
@@ -23,7 +23,7 @@ public class TwitterConnectorAuth {
     private String authHeader = "";
 
 
-    public TwitterConnectorAuth() {
+    public ServiceAuthenticate() {
         updateAllParams();
     }
 
@@ -80,7 +80,7 @@ public class TwitterConnectorAuth {
     private String updateSignature(boolean isEncoded) {
         String result;
         String singatureBaseUrl = "POST" + "&" +
-                OAuth.percentEncode(UserData.BASE_URL + "oauth/request_token/") + "&" +
+                OAuth.percentEncode(UserData.BASE_URL + "oauth/request_token") + "&" +
                 "oauth_callback" + OAuth.percentEncode("=" + "http://localhost.com/retrofit" + "&") +
                 "oauth_consumer_key" + OAuth.percentEncode("=" + UserData.cKey + "&") +
                 "oauth_nonce" + OAuth.percentEncode("=" + nonce + "&") +

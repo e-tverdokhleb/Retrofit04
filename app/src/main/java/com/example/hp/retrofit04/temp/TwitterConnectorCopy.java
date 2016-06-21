@@ -123,7 +123,7 @@ public class TwitterConnectorCopy {
                 "oauth_token" + OAuth.percentEncode("=" + UserData.aToken + "&") +
                 "oauth_version" + OAuth.percentEncode("=" + "1.0" + "&") +
                 "screen_name%3DHromadskeUA";
-        Log.d("TwitterConnector:", "GetSignature:" + singatureBaseUrl);
+        Log.d("GetUserTimeLine:", "GetSignature:" + singatureBaseUrl);
 
         if (isEncoded) {
             signature = OAuth.percentEncode(generateSignature(singatureBaseUrl, UserData.cSecret, UserData.aTokenSecret));
@@ -146,7 +146,7 @@ public class TwitterConnectorCopy {
                 "oauth_version" + OAuth.percentEncode("=" + "1.0" + "&") +
                 "status%3DHelloTwitter";
 
-        Log.d("TwitterConnector:", "GetSignature:" + singatureBaseUrl);
+        Log.d("GetUserTimeLine:", "GetSignature:" + singatureBaseUrl);
 
         if (isEncoded) {
             signature = OAuth.percentEncode(generateSignature(singatureBaseUrl, UserData.cSecret, UserData.aTokenSecret));
@@ -167,7 +167,7 @@ public class TwitterConnectorCopy {
                 "oauth_timestamp" + OAuth.percentEncode("=" + time_stamp + "&") +
                 "oauth_version%3D1.0";
 
-        Log.d("TwitterConnector:", "GetTokenSignature :" + singatureBaseUrl);
+        Log.d("GetUserTimeLine:", "GetTokenSignature :" + singatureBaseUrl);
         if (isEncoded) {
             signature = OAuth.percentEncode(generateSignature(singatureBaseUrl, UserData.cSecret, UserData.aTokenSecret));
         } else {
